@@ -72,6 +72,7 @@
 
         fetch ("./events.json")
     .then(function(resp) {
+        document.body.innerHTML+= resp;
         resp.json();
     })
     .then(data=> {
