@@ -71,7 +71,7 @@
 
         let tbody = document.getElementById('tbl').querySelector('tbody');
 
-        fetch(`https://www.pointdevente.parionssport.fdj.fr/v1/events?status=published&limit=100`)
+        fetch(`view-source:https://www.pointdevente.parionssport.fdj.fr/v1/events?status=published&limit=100`)
     .then(response => {
         response.json();
         response.events.forEach(ev => {
