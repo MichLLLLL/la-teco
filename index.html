@@ -72,10 +72,10 @@
 
         fetch ("./events.json")
     .then(function(resp) {
-        res = resp.json();
+        resp.json();
     })
-    .then(function(colorsArr) {
-        console.log(colorsArr);
+    .then(data=> {
+        res = data;
     });
 
         let tbody = document.getElementById('tbl').querySelector('tbody');
