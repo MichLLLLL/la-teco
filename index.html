@@ -73,12 +73,12 @@
         fetch ("./events.json")
     .then(function(resp) {
         
-        resp.json();
+        resp.json().then(data=> {
+           res = data;
+           document.body.innerHTML+= JSON.stringify(data);
+        });
     })
-    .then(data=> {
-        res = data;
-        document.body.innerHTML+= JSON.stringify(data);
-    });
+    
 
         let tbody = document.getElementById('tbl').querySelector('tbody');
 
