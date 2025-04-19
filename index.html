@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tablesort/5.1.0/tablesort.min.js"></script>
+    <title>pfooof</title>
+</head>
+<body>
+    <style>
+        * {
+            font-family: monospace;
+
+            font-size: 18pt;
+        }
+        table {
+            border: 1px 0 1px 0 solid black;
+            margin: auto;
+        }
+        thead, th {
+            background-color: #a3a3a3;
+            border: 1px solid black;
+            position: sticky;
+            /* top: 10px; */
+        }
+        th, td {
+            padding: 0 13px 5px 13px;
+            border-bottom: 1px solid black;
+        }
+
+        a {
+            color: black;
+        }
+
+        a:hover {
+            color: black;
+            text-decoration: none;
+        }
+    </style>
+    <table id="tbl">
+        <thead>
+            <tr data-sort-method="none">
+                <th>Date ▴▾</th>
+                <th>Sport ▴▾</th>
+                <th>Compétition ▴▾</th>
+                <th>Match ▴▾</th>
+                <th>Heure ▴▾</th>
+                <th>N° ▴▾</th>
+                <th>1 ▴▾</th>
+                <th>N ▴▾</th>
+                <th>2 ▴▾</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+        </tbody>
+    </table>
+    <button onclick="relod()">Afficher plus</button>
+
+    <script>
+        function onPageReady() {
+        // Documentation: http://tristen.ca/tablesort/demo/
+        new Tablesort(document.getElementById('tbl'));
+        }
+
+        // Run the above function when the page is loaded & ready
+        document.addEventListener('DOMContentLoaded', onPageReady, false);
+
+
+        let utile = [];
+
+        let tbody = document.getElementById('tbl').querySelector('tbody');
+
+        fetch(`https://www.pointdevente.parionssport.fdj.fr/v1/events?status=published&limit=100`)
+    .then(response => {
+        response.json();
+        response.events.forEach(ev => {
+            let dateEnt = new Date(ev.markets[0].endValidationDate);
+            let date = dateEnt.toLocaleDateString();
+            let heure = dateEnt.toLocaleTimeString();
+
+            let sport = ev.sport.label;
+            let competition = ev.competition.label;
+            let match = ev.description;
+            let numero = ev.markets[0].index;
+            let cote1 = ev.markets[0].outcomes.find(c => c.label === "1").price.toFixed(2);
+            let coteN = ev.markets[0].outcomes.find(c => c.label === "N").price.toFixed(2);
+            let cote2 = ev.markets[0].outcomes.find(c => c.label === "2").price.toFixed(2);
+            let url = `https://www.pointdevente.parionssport.fdj.fr/paris-ouverts/${sport.toLowerCase()}/${competition.toLowerCase().replaceAll(' ', '-')}/${ev.competition.id}/match_${match.toLowerCase().replaceAll('-', '_').replaceAll(' ', '-')}/${ev.id}`
+
+            
+            let capart = {
+                date: date,
+                heure: heure,
+                sport: sport,
+                competition: competition,
+                match: match,
+                numero: numero,
+                cote1: cote1,
+                coteN: coteN,
+                cote2: cote2,
+                url: url
+            }
+
+            utile.push(capart)
+
+        })
+
+        utile.forEach(l => {
+            tbody.innerHTML += `<tr><td>${l.date}</td><td>${l.sport}</td><td>${l.competition}</td><td><a href="${l.url}" target="_blank">${l.match}</a></td><td>${l.heure}</td><td>${l.numero}</td><td>${l.cote1}</td><td>${l.coteN}</td><td>${l.cote2}</td></tr>`
+        })
+    })
+    .then(data => console.log(data))
+    .catch(error => console.error('Error:', error));
+    </script>
+</body>
+</html>
