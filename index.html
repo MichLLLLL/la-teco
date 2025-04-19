@@ -73,8 +73,8 @@
         fetch ("./events.json")
     .then(function(resp) {
         
-        resp.json().then(data=> {
-           let res = data;
+        resp.json().then(res => {
+           document.body.innerHTML +=  res.events[0].description;
            res.events.forEach(ev => {
             let dateEnt = new Date(ev.markets[0].endValidationDate);
             let date = dateEnt.toLocaleDateString();
