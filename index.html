@@ -72,7 +72,7 @@
 
         fetch ("./events.json")
     .then(function(resp) {
-        res = JSON.parse(resp.json());
+        res = resp.json();
     })
     .then(function(colorsArr) {
         console.log(colorsArr);
