@@ -76,40 +76,44 @@
         
         resp.json().then(res => {
            // document.body.innerHTML +=  res.events[0].description;
-           res.events.forEach(ev => {
-            let dateEnt = new Date(ev.markets[0].endValidationDate);
-            let date = dateEnt.toLocaleDateString();
-            let heure = dateEnt.toLocaleTimeString();
-
-            let sport = ev.sport.label;
-            let competition = ev.competition.label;
-            let match = ev.description;
-            let numero = ev.markets[0].index;
-            let cote1 = ev.markets[0].outcomes.find(c => c.label === "1").price.toFixed(2);
-            let coteN = ev.markets[0].outcomes.find(c => c.label === "N").price.toFixed(2);
-            let cote2 = ev.markets[0].outcomes.find(c => c.label === "2").price.toFixed(2);
-            let url = `https://www.pointdevente.parionssport.fdj.fr/paris-ouverts/${sport.toLowerCase()}/${competition.toLowerCase().replaceAll(' ', '-')}/${ev.competition.id}/match_${match.toLowerCase().replaceAll('-', '_').replaceAll(' ', '-')}/${ev.id}`
-
-            
-            let capart = {
-                date: date,
-                heure: heure,
-                sport: sport,
-                competition: competition,
-                match: match,
-                numero: numero,
-                cote1: cote1,
-                coteN: coteN,
-                cote2: cote2,
-                url: url
+            try {
+                res.events.forEach(ev => {
+                    let dateEnt = new Date(ev.markets[0].endValidationDate);
+                    let date = dateEnt.toLocaleDateString();
+                    let heure = dateEnt.toLocaleTimeString();
+        
+                    let sport = ev.sport.label;
+                    let competition = ev.competition.label;
+                    let match = ev.description;
+                    let numero = ev.markets[0].index;
+                    let cote1 = ev.markets[0].outcomes.find(c => c.label === "1").price.toFixed(2);
+                    let coteN = ev.markets[0].outcomes.find(c => c.label === "N").price.toFixed(2);
+                    let cote2 = ev.markets[0].outcomes.find(c => c.label === "2").price.toFixed(2);
+                    let url = `https://www.pointdevente.parionssport.fdj.fr/paris-ouverts/${sport.toLowerCase()}/${competition.toLowerCase().replaceAll(' ', '-')}/${ev.competition.id}/match_${match.toLowerCase().replaceAll('-', '_').replaceAll(' ', '-')}/${ev.id}`
+        
+                    
+                    let capart = {
+                        date: date,
+                        heure: heure,
+                        sport: sport,
+                        competition: competition,
+                        match: match,
+                        numero: numero,
+                        cote1: cote1,
+                        coteN: coteN,
+                        cote2: cote2,
+                        url: url
+                    }
+        
+                    utile.push(capart)
+                })
+        
+                utile.forEach(l => {
+                    tbody.innerHTML += `<tr><td>${l.date}</td><td>${l.sport}</td><td>${l.competition}</td><td><a href="${l.url}" target="_blank">${l.match}</a></td><td>${l.heure}</td><td>${l.numero}</td><td>${l.cote1}</td><td>${l.coteN}</td><td>${l.cote2}</td></tr>`
+                })
+            } catch(error) {
+                console.error(error)
             }
-
-            utile.push(capart)
-        })
-
-        utile.forEach(l => {
-            tbody.innerHTML += `<tr><td>${l.date}</td><td>${l.sport}</td><td>${l.competition}</td><td><a href="${l.url}" target="_blank">${l.match}</a></td><td>${l.heure}</td><td>${l.numero}</td><td>${l.cote1}</td><td>${l.coteN}</td><td>${l.cote2}</td></tr>`
-        })
         });
     })
         
