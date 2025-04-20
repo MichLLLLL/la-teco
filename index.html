@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tablesort/5.1.0/tablesort.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
     <script src="tablesort.number.js"></script>
     <title>pfooof</title>
 </head>
@@ -56,7 +58,7 @@
         <tbody>
         </tbody>
     </table>
-    <button onclick="relod()">Afficher plus</button>
+    <!--<button onclick="relod()">Afficher plus</button>-->
 
     <script>
         function onPageReady() {
@@ -113,7 +115,7 @@
             })
     
             utile.forEach(l => {
-                tbody.innerHTML += `<tr><td>${l.date}</td><td>${l.sport}</td><td>${l.competition}</td><td><a href="${l.url}" target="_blank">${l.match}</a></td><td>${l.heure}</td><td>${l.numero}</td><td>${l.cote1}</td><td>${l.coteN}</td><td>${l.cote2}</td></tr>`
+                tbody.innerHTML += `<tr><td>${l.date}</td><td>${l.sport}</td><td>${l.competition}</td><td><a href="${l.url}" target="_blank">${l.match}<i class="fas fa-external-link-alt"></i></a></td><td>${l.heure}</td><td>${l.numero}</td><td>${l.cote1}</td><td>${l.coteN}</td><td>${l.cote2}</td></tr>`
             })
         });
     })
