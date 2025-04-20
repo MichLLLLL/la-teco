@@ -76,8 +76,8 @@
         
         resp.json().then(res => {
            // document.body.innerHTML +=  res.events[0].description;
-            try {
-                res.events.forEach(ev => {
+            res.events.forEach(ev => {
+                try {
                     let dateEnt = new Date(ev.markets[0].endValidationDate);
                     let date = dateEnt.toLocaleDateString();
                     let heure = dateEnt.toLocaleTimeString();
@@ -106,14 +106,14 @@
                     }
         
                     utile.push(capart)
-                })
-        
-                utile.forEach(l => {
-                    tbody.innerHTML += `<tr><td>${l.date}</td><td>${l.sport}</td><td>${l.competition}</td><td><a href="${l.url}" target="_blank">${l.match}</a></td><td>${l.heure}</td><td>${l.numero}</td><td>${l.cote1}</td><td>${l.coteN}</td><td>${l.cote2}</td></tr>`
-                })
-            } catch(error) {
-                console.error(error)
-            }
+                } catch(error) {
+                    console.error(error)
+                }
+            })
+    
+            utile.forEach(l => {
+                tbody.innerHTML += `<tr><td>${l.date}</td><td>${l.sport}</td><td>${l.competition}</td><td><a href="${l.url}" target="_blank">${l.match}</a></td><td>${l.heure}</td><td>${l.numero}</td><td>${l.cote1}</td><td>${l.coteN}</td><td>${l.cote2}</td></tr>`
+            })
         });
     })
         
