@@ -204,7 +204,7 @@ Seuls vos reÃ§us papiers feront foi et constitueront une preuve des paris engagÃ
             zizi = "";
             i+=1;
             tbody.querySelectorAll('span').forEach(s => {
-                if (s.textContent === "") {
+                if (s.textContent === "" || s.textContent === "0") {
                     s.remove();
                 }
             })
