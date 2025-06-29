@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://tristen.ca/tablesort/src/tablesort.js"></script>
+        <script src="https://tristen.ca/tablesort/src/sorts/tablesort.date.js"></script>
+        <script src="https://tristen.ca/tablesort/src/sorts/tablesort.number.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
+        <title>pfooof</title>
+    </head>
+<body>
+    <style>
+        * {
+            font-family: monospace;
+
+            font-size: 18pt;
+        }
+        table {
+            border: 1px 0 1px 0 solid black;
+            margin: auto;
+        }
+        thead, th {
+            background-color: #a3a3a3;
+            border: 1px solid black;
+            position: sticky;
+            top: 10px;
+            z-index: 1;
+            box-shadow: 0px -14px 0px 0px #FFFFFF;
+        }
+        th, td, tr {
+            padding: 0 13px 5px 13px;
+            border-bottom: 1px solid black;
+            white-space: nowrap;
+        }
+
+        a {
+            color: black;
+        }
+
+        a:hover {
+            color: black;
+            text-decoration: none;
+        }
+
+        span.teco {
+            user-select: none;
+            display: inline-block;
+            border-radius: 5px;
+            border: 1px solid black;
+            transition: all .1s ease;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        span.teco:hover {
+            background-color: #9ef371;
+            /* padding: 6px; */
+            transform: scale(1.1);
+        }
+
+        span.teco.select {
+            background-color: #85c761;
+            /* padding: 6px; */
+            transform: scale(1.1);
+            border: 2px solid black;
+        }
+
+        th {
+            cursor: pointer;
+            user-select: none;
+            transition: .1s ease;
+            white-space: nowrap;
+        }
+
+        th:hover {
+            background-color: #7b7b7b;
+
+        }
+        
+        i:not(.code) {
+            transform: scale(0.8) translateX(35%);
+            z-index: -1;
+        }
+
+        ps {
+            display: none;
+        }
+
+        span.ico_flag {
+            transform: scale(1.5);
+
+        }
+
+        #qrbtn {
+            position: fixed;
+            bottom: 3vh;
+            right: 2vh;
+            cursor: pointer;
+            width: 9vh;
+            height: 9vh;
+            font-size: 20pt;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 2px solid black;
+            background: #9ef371;
+            color: rgb(0, 0, 0);
+            transition: all .1s ease;
+            transform: scale(0);
+        }
+
+        #qrbtn.pari {
+            transform: scale(1);
+        }
+
+        #qrbtn.pari:hover {
+            background-color: #85c761;
+            transform: scale(1.1);
+        }
+    </style>
+    <h1>cliquer sur une colonne pour trier les évènements</h1>
+    <input type="text" placeholder="Rechercher un évènement"><br><br><br><br>
+    <table id="tbl">
+        <thead>
+            <tr data-sort-method="none">
+                <!-- <th role="columnheader" onclick="console.log('cazz')" id="ms">Ms ▴▾</th> -->
+                <th role="columnheader" class="date" data-sort-method="none">Date ▴▾</th>
+                <th role="columnheader" id="heure" class="date" data-sort-method="none">Heure ▴▾</th>
+                <th role="columnheader">Sport ▴▾</th>
+                <th role="columnheader">Compétition ▴▾</th>
+                <th role="columnheader">Match ▴▾</th>
+                <th role="columnheader">N° ▴▾</th>
+                <th class="teco" role="columnheader" data-sort-method="number">1 ▴▾</th>
+                <th class="teco" role="columnheader" data-sort-method="number">N ▴▾</th>
+                <th class="teco" role="columnheader" data-sort-method="number">2 ▴▾</th>
+                <div id="more">
+                    <th role="columnheader" data-sort-method="number" classe="teco">H (N°)</th>
+                    <th role="columnheader" data-sort-method="number" classe="teco">1</th>
+                    <th role="columnheader" data-sort-method="number" classe="teco">N</th>
+                    <th role="columnheader" data-sort-method="number" classe="teco">2</th>
+                    <th role="columnheader" data-sort-method="number" classe="teco">MT (N°)</th>
+                    <th role="columnheader" data-sort-method="number" classe="teco">1</th>
+                    <th role="columnheader" data-sort-method="number" classe="teco">N</th>
+                    <th role="columnheader" data-sort-method="number" classe="teco">2</th>
+                </div>
+            </tr>
+        </thead>
+        <div class="load">
+            <tr><td>27/06/2025</td><td>Basketball</td><td>WNBA</td><td><a href="zob" target="_blank">ATL Dream - MIN Lynx<i class="fas fa-external-link-alt"></i></a></td><td>23:25</td><td>104</td><td>2,30</td><td>12,0</td><td>1,58</td></tr><tr><td>27/06/2025</td><td>Basketball</td><td>WNBA</td><td><a href="zob" target="_blank">DAL Wings - IND Fever<i class="fas fa-external-link-alt"></i></a></td><td>23:25</td><td>516</td><td>2,05</td><td>11,0</td><td>1,80</td></tr><tr><td>27/06/2025</td><td>Football</td><td>Amicaux (F)</td><td><a href="zob" target="_blank">Canada F - Costa Rica F<i class="fas fa-external-link-alt"></i></a></td><td>23:25</td><td>651</td><td>1,01</td><td>7,05</td><td>18,5</td></tr><tr><td>27/06/2025</td><td>Football</td><td>D1 Equateur</td><td><a href="zob" target="_blank">Dep.Cuenca-Mushuc Runa<i class="fas fa-external-link-alt"></i></a></td><td>23:55</td><td>619</td><td>1,66</td><td>3,30</td><td>3,80</td></tr><tr><td>28/06/2025</td><td>Basketball</td><td>WNBA</td><td><a href="zob" target="_blank">GS Valkyries - CHI Sky<i class="fas fa-external-link-alt"></i></a></td><td>01:55</td><td>112</td><td>1,21</td><td>16,0</td><td>4,00</td></tr><tr><td>28/06/2025</td><td>Basketball</td><td>WNBA</td><td><a href="zob" target="_blank">PHX Mercury-NY Liberty<i class="fas fa-external-link-alt"></i></a></td><td>01:55</td><td>114</td><td>1,84</td><td>12,0</td><td>2,00</td></tr><tr><td>28/06/2025</td><td>Basketball</td><td>WNBA</td><td><a href="zob" target="_blank">SEA Storm - CON Sun<i class="fas fa-external-link-alt"></i></a></td><td>01:55</td><td>124</td><td>1,02</td><td>28,0</td><td>8,50</td></tr><tr><td>28/06/2025</td><td>Football</td><td>Amicaux (F)</td><td><a href="zob" target="_blank">Mexique F - Colombie F<i class="fas fa-external-link-alt"></i></a></td><td>01:55</td><td>642</td><td>2,10</td><td>3,00</td><td>2,60</td></tr><tr><td>28/06/2025</td><td>Rugby</td><td>NRL</td><td><a href="zob" target="_blank">Broncos - Warriors<i class="fas fa-external-link-alt"></i></a></td><td>04:55</td><td>337</td><td>1,46</td><td>22,0</td><td>2,55</td></tr><tr><td>28/06/2025</td><td>Rugby</td><td>NRL</td><td><a href="zob" target="_blank">Dragons-Parramatta Eels<i class="fas fa-external-link-alt"></i></a></td><td>07:25</td><td>329</td><td>1,65</td><td>22,0</td><td>2,15</td></tr><tr><td>28/06/2025</td><td>Tennis</td><td>Bad Homburg DF</td><td><a href="zob" target="_blank">Guo/Panova-Kichenok/Perez<i class="fas fa-external-link-alt"></i></a></td><td>08:55</td><td>997</td><td>1,96</td><td>0</td><td>1,59</td></tr><tr><td>28/06/2025</td><td>Football</td><td>D1 Finlande</td><td><a href="zob" target="_blank">SJK Sein�joen-Mariehamn<i class="fas fa-external-link-alt"></i></a></td><td>08:55</td><td>596</td><td>1,35</td><td>4,45</td><td>4,95</td></tr><tr><td>28/06/2025</td><td>Football</td><td>D1 Japon</td><td><a href="zob" target="_blank">Kashima - Okayama<i class="fas fa-external-link-alt"></i></a></td><td>08:55</td><td>575</td><td>1,68</td><td>3,35</td><td>3,85</td></tr>
+        </div>
+        <tbody>
+
+        </tbody>
+    </table>
+    <div id="qrbtn"><i class="fa fa-qrcode code" aria-hidden="true"></i></div>
+    <footer>
+        Attention : vérifiez toujours vos reçus de jeux après validation, une erreur technique étant toujours possible.
+Les cotes peuvent évoluer dans le temps. Les résultats en live, définitifs ainsi que les montants des gains éventuels sont donnés à titre indicatif.
+Seuls vos reçus papiers feront foi et constitueront une preuve des paris engagés.
+    </footer>
+
+    <button onclick="relod()">Afficher plus</button>
+    <section class="ps"></section>
+    <script>
+        function onPageReady() {
+        // Documentation: http://tristen.ca/tablesort/demo/
+            new Tablesort(document.getElementById('tbl'));
+        }
+
+        // Run the above function when the page is loaded & ready
+        document.addEventListener('DOMContentLoaded', onPageReady, false);
+
+
+        document.querySelector('input[type=text]').addEventListener('input', e=> {
+            tbody.querySelectorAll('tr').forEach(t => {
+                if (!t.innerHTML.toLowerCase().includes(e.target.value.toLowerCase())) {
+                    t.style.visibility = 'collapse';
+                } else {
+                    t.style.visibility = 'visible';
+                }
+            }) 
+        })
+
+        let cmb = 0;
+        let qr = "";
+        let tecos = [];
+        let i = 0;
+        let zizi = "";
+        Array.from(document.getElementsByClassName('date')).forEach(el => el.addEventListener('click', (e) => {
+            if (i%2 == 0) {
+                utile.sort((a, b) => a.ms > b.ms)
+            } else {
+                utile.sort((a, b) => a.ms < b.ms)
+            }
+            document.querySelector('tbody').innerHTML = '';
+            utile.forEach(l => {
+                    zizi += `<tr data-mid="${l.id}"><td>${l.dateFr}</td><td>${l.heure}</td><td>${l.sport}</td><td>${l.competition}</td><td><a href="${l.url}" target="_blank">${l.match}<i class="fas fa-external-link-alt"></i></a></td><td>${l.numero}</span></td><td data-num="${l.numero}" data-choix="1" data-sort="${parseFloat(l.cote1.replace(',', '.'))}"><span class="teco">${l.cote1}</span></td><td data-num="${l.numero}" data-choix="N" data-sort="${parseFloat(l.coteN.replace(',', '.'))}"><span class="teco">${l.coteN}</span></td><td data-num="${l.numero}" data-choix="2" data-sort="${parseFloat(l.cote2.replace(',', '.'))}"><span class="teco">${l.cote2}</td><td>${l.numeroH}</span></td><td data-num="${l.numeroH}" data-choix="1" data-sort="${parseFloat(l.H1.replace(',', '.'))}"><span class="teco">${l.H1}</span></td><td data-num="${l.numeroH}" data-choix="N" data-sort="${parseFloat(l.HN.replace(',', '.'))}"><span class="teco">${l.HN}</span></td><td data-num="${l.numeroH}" data-choix="2" data-sort="${parseFloat(l.H2.replace(',', '.'))}"><span class="teco">${l.H2}</td><td>${l.numeroMT}</span></td><td data-num="${l.numeroMT}" data-choix="1" data-sort="${parseFloat(l.MT1.replace(',', '.'))}"><span class="teco">${l.MT1}</span></td><td data-num="${l.numeroMT}" data-choix="N" data-sort="${parseFloat(l.MTN.replace(',', '.'))}"><span class="teco">${l.MTN}</span></td><td data-num="${l.numeroMT}" data-choix="2" data-sort="${parseFloat(l.MT2.replace(',', '.'))}"><span class="teco">${l.MT2}</td></tr>`
+
+            })
+            tbody.innerHTML = zizi;
+            zizi = "";
+            i+=1;
+            tbody.querySelectorAll('span').forEach(s => {
+                if (s.textContent === "") {
+                    s.remove();
+                }
+            })
+
+            
+            tecos = document.querySelectorAll('span.teco');
+            let count = 0;
+            let matchL = new Set();
+            let tpss = new Set();
+            tecos.forEach(teco => {
+                teco.addEventListener('click', (e) => {
+                    teco.classList.toggle('select')
+                    count = document.getElementsByClassName('select').length;
+                    let iid = e.target.parentElement.parentElement.dataset.mid; // id du match (moi)
+                    let num = e.target.parentElement.dataset.num; // numero de pari
+                    let pari = e.target.parentElement.dataset.choix.replace('2', '3').replace('N', '2'); // correspondance du clic-pari
+                    let nvmatch = `${num}P${pari}`; // formule NumPPari
+                    let z = utile.find(m => m.id == iid);// trouve le pari dans la data
+                    const type = count > 1 ? "C" : "S";
+                    if (teco.classList.contains('select')) {
+                        matchL.add(nvmatch);
+                        tpss.add(z.ms)
+                    } else {
+                        matchL.delete(nvmatch);
+                        tpss.delete(z.ms);
+                    }
+
+                    if (count > 0) {
+                        document.querySelector('#qrbtn').classList.add('pari');
+                    } else {
+                        document.querySelector('#qrbtn').classList.remove('pari');
+                    }
+
+                    cmb = matchL.length;
+                    let t = (Array.from(tpss).sort((a,b) => a-b))[0];
+                    let tps = new Date(t);
+                    let idJ = calculateDays(startDate, tps.toISOString().split('T')[0]);
+                    let tp = tps.toTimeString().substr(0,5).replace(':', '');
+
+                    qr = `1;FDJ;PDJ;${idJ},${tp};43;${type};${Array.from(matchL).join(',')}`;
+                });
+            });
+        }))
+
+        const headers = document.querySelectorAll('th');
+
+        let tri = 0;
+        headers.forEach(header => {
+            header.addEventListener('click', (e) => {
+                if (tri > 0) {
+                    headers.forEach(h => h.innerHTML = h.textContent.replace('▴', '').replace('▾', '').trim());
+
+                    console.log(tri%2)
+                    if (tri%2 == 1) {
+                        e.target.innerHTML += ' ▴';
+
+                    } else {
+                        e.target.innerHTML += ' ▾';
+                    }
+                    tri+=1;
+                }
+                else {
+                    tri+=1;
+                }     
+            });
+        });
+
+
+        
+
+
+
+
+        function dateFra(date) {
+            const jours = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+            const mois = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
+                        'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+
+            const jourNom = jours[date.getDay()];
+            const jourNum = date.getDate();
+            const moisNom = mois[date.getMonth()];
+
+            return `${jourNom} ${jourNum} ${moisNom}`;
+        }
+
+
+        
+        /*
+        jour = tr.parentElement.parentElement.querySelector('thead').querySelector('tr').firstChild.innerHTML;
+        date et heure = tr.querySelectorAll('td')[1].querySelector('span').dataset.dateUtc;
+        matchid = tr.querySelectorAll('td')[1].querySelector('input').value; en ft nn
+        sport =   tr.querySelectorAll('td')[2].querySelector('span').classList[1]
+        match = tr.querySelectorAll('td')[2].querySelector('a').childNodes[1].textContent.replace('-', ' - ') : "blabal - blibli";
+        compet = tr.querySelectorAll('td')[2].querySelector('a').childNodes[2].querySelector('strong').textContent.trim()
+
+        n° = tr.querySelectorAll('td')[4]?.textContent.trim() ?? "";
+        1 = tr.querySelectorAll('td')[5]?.textContent.trim() ?? ""
+        N = tr.querySelectorAll('td')[6]?.textContent.trim() ?? ""
+        2 = tr.querySelectorAll('td')[7]?.textContent.trim() ?? ""
+        prono = tr.querySelectorAll('td')[8]?.textContent.trim() ?? "";
+        n° H = tr.querySelectorAll('td')[9]?.textContent.trim() ?? "";
+        H1 = tr.querySelectorAll('td')[11]?.textContent.trim() ?? ""
+        HN = tr.querySelectorAll('td')[12]?.textContent.trim() ?? ""
+        H2 = tr.querySelectorAll('td')[13]?.textContent.trim() ?? ""
+        pronoH = tr.querySelectorAll('td')[14]?.textContent.trim() ?? "";
+        n° MT = tr.querySelectorAll('td')[15]?.textContent.trim() ?? "";
+        MT1 = tr.querySelectorAll('td')[16]?.textContent.trim() ?? ""
+        MTN = tr.querySelectorAll('td')[17]?.textContent.trim() ?? ""
+        MT2 = tr.querySelectorAll('td')[18]?.textContent.trim() ?? ""
+        pronoMT = tr.querySelectorAll('td')[19]?.textContent.trim() ?? "";
+
+
+
+        
+        
+        
+        
+        */
+        
+        let utile = [];
+        let tbody = document.getElementById('tbl').querySelector('tbody');
+        let ps = document.querySelector('section.ps');
+
+
+        fetch('https://braquage.svenoupoinpoin.workers.dev/')
+        .then(r => r.text())
+        .then((data) => {
+            ps.innerHTML = data;
+            ps.style.display = 'none';
+            let trs = [];
+
+            ps.querySelector('div#match-list').querySelectorAll('tbody').forEach(b => b.querySelectorAll('tr').forEach(tr => trs.push(tr)))
+            let id = 0;
+            trs.forEach((tr) => {
+                try {
+                    let dateEnt = new Date(tr.querySelectorAll('td')[1].querySelector('span').dataset.dateUtc);
+                    let date = dateEnt.toDateString();
+                    let heure = dateEnt.toTimeString().substr(0, 5);
+                    let dateFr = dateFra(dateEnt);
+                    let ms = dateEnt.getTime();
+                    let datecomas = "";
+        
+                    let sport = up1(tr.querySelectorAll('td')[2].querySelector('span').classList[1]);
+                    let competition = tr.querySelectorAll('td')[2].querySelector('a').childNodes[2].querySelector('strong').textContent.trim();
+                    let match = tr.querySelectorAll('td')[2].querySelector('a').childNodes[1].textContent.replace('-', ' - ').replace(' - ', '-');
+                    let numero = tr.querySelectorAll('td')[4]?.textContent.trim() ?? "";
+                    let cote1 = tr.querySelectorAll('td')[5]?.textContent.trim() ?? "";
+                    let coteN = tr.querySelectorAll('td')[6]?.textContent.trim() ?? "";
+                    let cote2 = tr.querySelectorAll('td')[7]?.textContent.trim() ?? "";
+
+                    
+                    numeroH = tr.querySelectorAll('td')[9]?.textContent.trim() ?? "";
+                    H1 = tr.querySelectorAll('td')[11]?.textContent.trim() ?? "";
+                    HN = tr.querySelectorAll('td')[12]?.textContent.trim() ?? "";
+                    H2 = tr.querySelectorAll('td')[13]?.textContent.trim() ?? "";
+                    numeroMT = tr.querySelectorAll('td')[15]?.textContent.trim() ?? "";
+                    MT1 = tr.querySelectorAll('td')[16]?.textContent.trim() ?? "";
+                    MTN = tr.querySelectorAll('td')[17]?.textContent.trim() ?? "";
+                    MT2 = tr.querySelectorAll('td')[18]?.textContent.trim() ?? "";
+                    // let url = `https://www.pointdevente.parionssport.fdj.fr/paris-ouverts/${sport.toLowerCase()}/${competition.toLowerCase().replaceAll(' ', '-')}/${ev.competition.id}/match_${match.toLowerCase().replaceAll('-', '_').replaceAll(' ', '-')}/${ev.id}`
+        
+                    if (id == 0) {
+                        if(dateFr === datecomas) {
+                            dateFr = "";
+                        }
+                    }
+                    datecomas = dateFr;
+
+                    let capart = {
+                        date: date,
+                        dateFr: dateFr,
+                        heure: heure,
+                        ms: ms,
+                        sport: sport,
+                        competition: competition,
+                        match: match,
+                        numero: numero,
+                        cote1: cote1,
+                        coteN: coteN,
+                        cote2: cote2,
+                        numeroH: numeroH,
+                        H1: H1,
+                        HN: HN,
+                        H2: H2,
+                        numeroMT: numeroMT,
+                        MT1: MT1,
+                        MTN: MTN,
+                        MT2: MT2,
+                        url: "zob",
+                        id: id
+                    }
+        
+                    utile.push(capart)
+                    id+=1;
+                } catch(error) {
+                    console.error(error)
+                }
+
+            })
+            // for (var z; z<utile.length; z++) {
+            //     if (utile[z].id !== 0) {
+            //         if(utile[z].dateFr === utile[z - 1].dateFr) {
+            //             utile[z].dateFr = "";
+            //         }
+            //     }
+            // }
+
+            document.querySelector('#heure').click()
+
+            // tbody.innerHTML = "";
+            // utile.forEach(l => {
+            //         zizi += `<tr  data-mid="${l.id}"><td>${l.dateFr}</td><td>${l.heure}</td><td>${l.sport}</td><td>${l.competition}</td><td><a href="${l.url}" target="_blank">${l.match}<i class="fas fa-external-link-alt"></i></a></td><td>${l.numero}</span></td><td data-sort="${parseFloat(l.cote1.replace(',', '.'))}"><span class="teco">${l.cote1}</span></td><td data-sort="${parseFloat(l.coteN.replace(',', '.'))}"><span class="teco">${l.coteN}</span></td><td data-sort="${parseFloat(l.cote2.replace(',', '.'))}"><span class="teco">${l.cote2}</td><td>${l.numeroH}</span></td><td data-sort="${parseFloat(l.H1.replace(',', '.'))}"><span class="teco">${l.H1}</span></td><td data-sort="${parseFloat(l.HN.replace(',', '.'))}"><span class="teco">${l.HN}</span></td><td data-sort="${parseFloat(l.H2.replace(',', '.'))}"><span class="teco">${l.H2}</td><td>${l.numeroMT}</span></td><td data-sort="${parseFloat(l.MT1.replace(',', '.'))}"><span class="teco">${l.MT1}</span></td><td data-sort="${parseFloat(l.MTN.replace(',', '.'))}"><span class="teco">${l.MTN}</span></td><td data-sort="${parseFloat(l.MT2.replace(',', '.'))}"><span class="teco">${l.MT2}</td></tr>`
+            // })
+            // tbody.innerHTML = zizi;
+            // tbody.querySelectorAll('span').forEach(s => {
+            //     if (s.textContent === "" || s.textContent === "0") {
+            //         s.remove();
+            //     }
+            // })
+            // tecos = document.querySelectorAll('span.teco');
+
+
+
+        })
+
+
+        // fetch('https://braquage.svenoupoinpoin.workers.dev/')
+        // .then(r => r.text())
+        // .then((data) => {
+        //     ps.innerHTML = data;
+        //     let trs = [];
+        //     ps.querySelector('div#match-list').querySelectorAll('tbody').forEach(b => b.querySelectorAll('tr').forEach(tr => trs.push(tr)))
+        //     trs.forEach(tr => {
+        //         let match = tr.querySelectorAll('td')[2].querySelector('a').childNodes[1].textContent.replace('-', ' - ').replace(' - ', '-');
+        //         tr.querySelectorAll('td')[2].innerHTML = match;
+
+        //     })
+
+        
+        // })
+
+
+
+        
+        function up1(mot) {
+            let n = mot.split('');
+            n[0] = n[0].toUpperCase();
+            return n.join('');
+        }
+
+    // fetch ("./events.json")
+    // .then(function(resp) {
+        
+    //     resp.json().then(res => {
+    //        // document.body.innerHTML +=  res.events[0].description;
+    //         res.events.forEach(ev => {
+    //             try {
+    //                 let dateEnt = new Date(ev.markets[0].endValidationDate);
+    //                 let date = dateEnt.toLocaleDateString();
+    //                 let heure = dateEnt.toLocaleTimeString();
+        
+    //                 let sport = ev.sport.label;
+    //                 let competition = ev.competition.label;
+    //                 let match = ev.description;
+    //                 let numero = ev.markets[0].index;
+    //                 let cote1 = ev.markets[0].outcomes.find(c => c.label === "1").price.toFixed(2);
+    //                 let coteN = ev.markets[0].outcomes.find(c => c.label === "N").price.toFixed(2);
+    //                 let cote2 = ev.markets[0].outcomes.find(c => c.label === "2").price.toFixed(2);
+    //                 let url = `https://www.pointdevente.parionssport.fdj.fr/paris-ouverts/${sport.toLowerCase()}/${competition.toLowerCase().replaceAll(' ', '-')}/${ev.competition.id}/match_${match.toLowerCase().replaceAll('-', '_').replaceAll(' ', '-')}/${ev.id}`
+        
+                    
+    //                 let capart = {
+    //                     date: date,
+    //                     heure: heure,
+    //                     sport: sport,
+    //                     competition: competition,
+    //                     match: match,
+    //                     numero: numero,
+    //                     cote1: cote1,
+    //                     coteN: coteN,
+    //                     cote2: cote2,
+    //                     url: url
+    //                 }
+        
+    //                 utile.push(capart)
+    //             } catch(error) {
+    //                 console.error(error)
+    //             }
+    //         })
+    
+    //         utile.forEach(l => {
+    //             tbody.innerHTML += `<tr><td>${l.date}</td><td>${l.sport}</td><td>${l.competition}</td><td><a href="${l.url}" target="_blank">${l.match}<i class="fas fa-external-link-alt"></i></a></td><td>${l.heure}</td><td>${l.numero}</td><td>${l.cote1}</td><td>${l.coteN}</td><td>${l.cote2}</td></tr>`
+    //         })
+    //     });
+    // })
+
+        // A PROPOS DE QR CODE MGL
+        // 1;FDJ;PDJ;{ID DE JOUR},{FIN DE VALID DU PREMIER PARI (hhmm)};?;{TYPE : S, C, M};{Matchs : N°P{1/2/3 (=1/N/2)}};{MISE} SI MULTIPLE : {M{x>1},{tt}}
+        function calculateDays(startDate, endDate) {
+            let start = new Date(startDate);
+            let end = new Date(endDate);
+            let timeDifference = end - start;
+            let daysDifference = timeDifference / (1000 * 3600 * 24);
+            return daysDifference;
+        }
+
+        let startDate = '1970-01-01';
+        let endDate = new Date();
+        let idJ = calculateDays(startDate, endDate.toISOString().split('T')[0]);
+
+
+    </script>
+</body>
+</html>
